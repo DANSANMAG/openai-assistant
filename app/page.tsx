@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Chat from "@/components/chat";
 
 export default function Home() {
@@ -12,4 +11,3 @@ export default function Home() {
     </main>
   );
 }
-
