@@ -3,7 +3,7 @@ import { Message } from "ai/react";
 
 const UserMessage = ({ text }: { text: string | undefined }) => {
   return (
-    <div className="text-white bg-black self-end py-2 px-4 rounded-3xl">
+    <div className="text-white bg-black self-end py-2 px-4 rounded-3xl max-w-[75%]">
       {text}
     </div>
   );
@@ -11,8 +11,28 @@ const UserMessage = ({ text }: { text: string | undefined }) => {
 
 const AssistantMessage = ({ text }: { text: string | undefined }) => {
   return (
-    <div className="bg-[#efefef] py-2 px-4 rounded-3xl w-fit">
-      <Markdown>{text}</Markdown>
+    <div className="bg-[#efefef] py-2 px-4 rounded-3xl w-fit max-w-[75%]">
+      <Markdown
+        components={{
+          a: ({ node, ...props }) => (
+            <a
+              {...props}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 no-underline"
+            />
+          ),
+          img: ({ node, ...props }) => (
+            <img
+              {...props}
+              className="rounded-xl mt-3 max-w-full h-auto"
+              alt={props.alt || "image"}
+            />
+          ),
+        }}
+      >
+        {text || ""}
+      </Markdown>
     </div>
   );
 };
