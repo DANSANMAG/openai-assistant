@@ -1,20 +1,3 @@
-Skip to content
-Sanmag's projects
-Sanmag's projects
-
-Hobby
-
-openai-assistant
-
-cn2taeic1
-
-Changelog
-Help
-Docs
-
-Source
-Output
-package.json
 
 {
   "name": "openai-assistant",
@@ -53,4 +36,6 @@ package.json
     "typescript": "^5"
   }
 }
+
+
 
