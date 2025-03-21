@@ -1,17 +1,19 @@
+"use client";
+
 import { useAssistant, Message } from "ai/react";
 import { useRef, useEffect, useState } from "react";
 import ChatMessage from "./chat-message";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Draggable from "react-draggable";
 
 export default function Chat() {
   const [loading, setLoading] = useState(false);
+  const [chatHeight, setChatHeight] = useState(500); // Default height
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { status, messages, submitMessage, input, handleInputChange } =
-    useAssistant({
-      api: "/api/assistant",
-    });
+    useAssistant({ api: "/api/assistant" });
 
   useEffect(() => {
     if (status === "in_progress") {
@@ -27,7 +29,6 @@ export default function Chat() {
     if ([...messages].pop()?.role === "assistant") {
       setLoading(false);
     }
-
     scrollToBottom();
   }, [messages]);
 
@@ -38,40 +39,47 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col-reverse h-full w-full">
-      <div className="flex flex-col order-2 flex-grow overflow-y-auto p-3 pt-5 whitespace-pre-wrap space-y-4">
-        {
-          <ChatMessage
-            key="key"
-            role="assistant"
-            content="Bun venit! Întreabă-mă orice despre produsele Sanmag!"
+    <Draggable>
+      <div
+        className="fixed bottom-5 right-5 bg-white shadow-lg border rounded-2xl flex flex-col w-[400px]"
+        style={{ height: `${chatHeight}px` }}
+      >
+        {/* Header */}
+        <div className="p-3 bg-gray-200 text-center text-black font-semibold cursor-move rounded-t-2xl">
+          Chat SanMag
+        </div>
+
+        {/* Messages */}
+        <div className="flex flex-col flex-grow overflow-y-auto p-3 whitespace-pre-wrap space-y-2">
+          {messages.map((msg, index) => (
+            <ChatMessage key={index} role={msg.role} content={msg.content} />
+          ))}
+          {loading && (
+            <div className="w-full rounded-3xl animate-pulse bg-gray-300 h-10" />
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Box - FIXED Bottom */}
+        <div className="p-3 border-t flex items-center gap-2">
+          <Input
+            ref={inputRef}
+            type="text"
+            className="flex-grow bg-[#efefef] py-2 px-3 rounded-lg border-2 border-gray-300"
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Scrie mesajul..."
           />
-        }
-        {messages.map((msg, index) => (
-          <ChatMessage key={index} role={msg.role} content={msg.content} />
-        ))}
-        {loading && (
-          <div className="w-full rounded-3xl animate-pulse bg-gray-300 h-10" />
-        )}
-        <div ref={messagesEndRef} />
+          <Button
+            type="submit"
+            className="py-2 px-5 bg-black text-white rounded-lg"
+            disabled={status !== "awaiting_message"}
+            onClick={submitMessage}
+          >
+            Trimite
+          </Button>
+        </div>
       </div>
-      <form onSubmit={submitMessage} className="flex w-full p-3 pb-10 order-1">
-        <Input
-          ref={inputRef}
-          type="text"
-          className="flex-grow mr-3 bg-[#efefef] py-4 px-6 rounded-3xl border-2 border-transparent border-solid text-base"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Scrie întrebarea ta aici..."
-        />
-        <Button
-          type="submit"
-          className="py-2 px-6 text-base rounded-3xl"
-          disabled={status !== "awaiting_message"}
-        >
-          Trimite
-        </Button>
-      </form>
-    </div>
+    </Draggable>
   );
 }
