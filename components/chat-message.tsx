@@ -1,10 +1,27 @@
+Skip to content
+Sanmag's projects
+Sanmag's projects
+
+Hobby
+
+openai-assistant
+
+cn2taeic1
+
+Changelog
+Help
+Docs
+
+Source
+Output
+components/chat-message.tsx
+
 import Markdown from "react-markdown";
 import { Message } from "ai/react";
-import remarkGfm from "remark-gfm"; // ✅ suport pentru imagini, tabele, linkuri etc.
 
 const UserMessage = ({ text }: { text: string | undefined }) => {
   return (
-    <div className="text-white bg-black self-end py-2 px-4 rounded-3xl max-w-[75%] text-sm leading-tight">
+    <div className="text-white bg-black self-end py-2 px-4 rounded-3xl max-w-[75%]">
       {text}
     </div>
   );
@@ -12,9 +29,8 @@ const UserMessage = ({ text }: { text: string | undefined }) => {
 
 const AssistantMessage = ({ text }: { text: string | undefined }) => {
   return (
-    <div className="bg-[#efefef] py-2 px-4 rounded-3xl w-fit max-w-[75%] text-sm leading-tight">
+    <div className="bg-[#efefef] py-2 px-4 rounded-3xl w-fit max-w-[75%]">
       <Markdown
-        remarkPlugins={[remarkGfm]}
         components={{
           a: ({ node, ...props }) => (
             <a
@@ -49,4 +65,6 @@ export default function ChatMessage({ role, content }: Partial<Message>) {
       return null;
   }
 }
+openai-assistant – Deployment Source – Vercel
+
 
