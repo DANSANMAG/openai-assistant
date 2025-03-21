@@ -38,7 +38,7 @@ export default function Chat() {
 
   return (
     <div
-      className="fixed bottom-5 right-5 bg-white shadow-lg border rounded-2xl flex flex-col w-[400px] h-[500px] resize overflow-hidden"
+      className="fixed bottom-5 right-5 bg-white shadow-lg border rounded-2xl flex flex-col w-[420px] h-[580px]"
     >
       {/* Header */}
       <div className="p-3 bg-gray-200 text-center text-black font-semibold rounded-t-2xl">
@@ -46,7 +46,7 @@ export default function Chat() {
       </div>
 
       {/* Messages */}
-      <div className="flex flex-col flex-grow overflow-y-auto p-3 whitespace-pre-wrap space-y-2">
+      <div className="flex flex-col flex-grow overflow-y-auto p-3 space-y-2">
         {messages.map((msg, index) => (
           <ChatMessage key={index} role={msg.role} content={msg.content} />
         ))}
@@ -62,12 +62,12 @@ export default function Chat() {
           event.preventDefault();
           submitMessage();
         }}
-        className="p-3 border-t flex items-center gap-2"
+        className="p-3 border-t flex items-center gap-2 bg-white"
       >
         <Input
           ref={inputRef}
           type="text"
-          className="flex-grow bg-[#efefef] py-2 px-3 rounded-lg border-2 border-gray-300"
+          className="flex-grow bg-[#efefef] py-3 px-4 rounded-lg border border-gray-300"
           value={input}
           onChange={handleInputChange}
           placeholder="Scrie mesajul..."
