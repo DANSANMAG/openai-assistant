@@ -1,5 +1,6 @@
 import Markdown from "react-markdown";
 import { Message } from "ai/react";
+import remarkGfm from "remark-gfm"; // ✅ import esențial
 
 const UserMessage = ({ text }: { text: string | undefined }) => {
   return (
@@ -13,6 +14,7 @@ const AssistantMessage = ({ text }: { text: string | undefined }) => {
   return (
     <div className="bg-[#efefef] py-2 px-4 rounded-3xl w-fit max-w-[75%]">
       <Markdown
+        remarkPlugins={[remarkGfm]} // ✅ activează suportul complet pt imagini
         components={{
           a: ({ node, ...props }) => (
             <a
