@@ -1,3 +1,21 @@
+Skip to content
+Sanmag's projects
+Sanmag's projects
+
+Hobby
+
+openai-assistant
+
+cn2taeic1
+
+Changelog
+Help
+Docs
+
+Source
+Output
+package.json
+
 {
   "name": "openai-assistant",
   "version": "0.1.0",
@@ -21,12 +39,10 @@
     "openai": "^4.44.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-markdown": "^8.0.7",
-    "remark-gfm": "^3.0.1",
+    "react-markdown": "^9.0.1",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7",
-    "react-draggable": "^4.4.5"
-},
+    "tailwindcss-animate": "^1.0.7"
+  },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
@@ -37,3 +53,4 @@
     "typescript": "^5"
   }
 }
+
