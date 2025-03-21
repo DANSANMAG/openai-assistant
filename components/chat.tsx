@@ -71,13 +71,16 @@ export default function Chat() {
             placeholder="Scrie mesajul..."
           />
           <Button
-            type="submit"
-            className="py-2 px-5 bg-black text-white rounded-lg"
-            disabled={status !== "awaiting_message"}
-            onClick={submitMessage}
-          >
-            Trimite
-          </Button>
+  type="submit"
+  className="py-2 px-5 bg-black text-white rounded-lg"
+  disabled={status !== "awaiting_message"}
+  onClick={(event) => {
+    event.preventDefault(); // 🚀 Evită comportamentul implicit al butonului
+    submitMessage(); // ✅ Apelează funcția fără erori de tip
+  }}
+>
+  Trimite
+</Button>
         </div>
       </div>
     </Draggable>
