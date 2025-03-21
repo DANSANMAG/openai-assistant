@@ -1,15 +1,10 @@
 import { useAssistant, Message } from "ai/react";
-import { useRef, useEffect, Dispatch, SetStateAction, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import ChatMessage from "./chat-message";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { WeatherData } from "@/app/page";
 
-export default function Chat({
-  setWeatherData,
-}: {
-  setWeatherData: Dispatch<SetStateAction<WeatherData>>;
-}) {
+export default function Chat() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -28,18 +23,7 @@ export default function Chat({
     }
   }, [status]);
 
-  const lastDataMessage = messages
-    .filter((m: Message) => m.role === "data")
-    .pop();
-
   useEffect(() => {
-    if (lastDataMessage) {
-      setWeatherData((prevWeatherData: WeatherData) => ({
-        ...prevWeatherData,
-        ...(lastDataMessage?.data as Object),
-      }));
-    }
-
     if ([...messages].pop()?.role === "assistant") {
       setLoading(false);
     }
@@ -60,7 +44,7 @@ export default function Chat({
           <ChatMessage
             key="key"
             role="assistant"
-            content="Hello! How can I assist you today?"
+            content="Bun venit! Întreabă-mă orice despre produsele Sanmag!"
           />
         }
         {messages.map((msg, index) => (
@@ -78,14 +62,14 @@ export default function Chat({
           className="flex-grow mr-3 bg-[#efefef] py-4 px-6 rounded-3xl border-2 border-transparent border-solid text-base"
           value={input}
           onChange={handleInputChange}
-          placeholder="Enter your question"
+          placeholder="Scrie întrebarea ta aici..."
         />
         <Button
           type="submit"
           className="py-2 px-6 text-base rounded-3xl"
           disabled={status !== "awaiting_message"}
         >
-          Send
+          Trimite
         </Button>
       </form>
     </div>
