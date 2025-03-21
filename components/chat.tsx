@@ -1,4 +1,20 @@
-"use client";
+Skip to content
+Sanmag's projects
+Sanmag's projects
+
+Hobby
+
+openai-assistant
+
+cn2taeic1
+
+Changelog
+Help
+Docs
+
+Source
+Output
+components/chat.tsx
 
 import { useAssistant, Message } from "ai/react";
 import { useRef, useEffect, useState } from "react";
@@ -11,7 +27,9 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { status, messages, submitMessage, input, handleInputChange } =
-    useAssistant({ api: "/api/assistant" });
+    useAssistant({
+      api: "/api/assistant",
+    });
 
   useEffect(() => {
     if (status === "in_progress") {
@@ -27,6 +45,7 @@ export default function Chat() {
     if ([...messages].pop()?.role === "assistant") {
       setLoading(false);
     }
+
     scrollToBottom();
   }, [messages]);
 
@@ -37,49 +56,18 @@ export default function Chat() {
   };
 
   return (
-    <div
-      className="fixed bottom-5 right-5 bg-white shadow-lg border rounded-2xl flex flex-col w-[420px] h-[580px]"
-    >
-      {/* Header */}
-      <div className="p-3 bg-gray-200 text-center text-black font-semibold rounded-t-2xl">
-        Chat SanMag
-      </div>
-
-      {/* Messages */}
-      <div className="flex flex-col flex-grow overflow-y-auto p-3 space-y-2">
+    <div className="flex flex-col-reverse h-full w-full">
+      <div className="flex flex-col order-2 flex-grow overflow-y-auto p-3 pt-5 whitespace-pre-wrap space-y-4">
+        {
+          <ChatMessage
+            key="key"
+            role="assistant"
+            content="Bun venit! Întreabă-mă orice despre produsele Sanmag!"
+          />
+        }
         {messages.map((msg, index) => (
           <ChatMessage key={index} role={msg.role} content={msg.content} />
         ))}
         {loading && (
           <div className="w-full rounded-3xl animate-pulse bg-gray-300 h-10" />
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Box - FIXED Bottom */}
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          submitMessage();
-        }}
-        className="p-3 border-t flex items-center gap-2 bg-white"
-      >
-        <Input
-          ref={inputRef}
-          type="text"
-          className="flex-grow bg-[#efefef] py-3 px-4 rounded-lg border border-gray-300"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Scrie mesajul..."
-        />
-        <Button
-          type="submit"
-          className="py-2 px-5 bg-black text-white rounded-lg"
-          disabled={status !== "awaiting_message"}
-        >
-          Trimite
-        </Button>
-      </form>
-    </div>
-  );
-}
+openai-assistant – Deployment Source – Vercel
