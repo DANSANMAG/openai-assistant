@@ -27,7 +27,7 @@ export async function POST(req: Request) {
           })(),
       });
 
-         let codeInterpreterInput = "";
+      let codeInterpreterInput = "";
       let codeInterpreterId = "";
       let codeInterpreterInvoked = false;
 
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         .on("messageCreated", () => {
           if (!codeInterpreterInvoked) return;
 
-                  sendMessage({
+          sendMessage({
             id: codeInterpreterId,
             role: "assistant",
             content: [{ type: "text", text: { value: codeInterpreterInput } }],
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
                 case "get_weather":
                   const data = getWeather(parameters.location);
 
-               sendDataMessage({
+                  sendDataMessage({
                     id: toolCall.id,
                     role: "data",
                     data: data,
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
 
                 default:
                   throw new Error(
-                    `Unknown tool call function: ${toolCall.function.name}`
+                    Unknown tool call function: ${toolCall.function.name}
                   );
               }
             }
