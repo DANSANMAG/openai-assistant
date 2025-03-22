@@ -25,7 +25,6 @@ export async function POST(req: Request) {
           (() => {
             throw new Error("OPENAI_ASSISTANT_ID variable is not set");
           })(),
-        max_tokens: 3000, // ✅ adăugăm limită mai mare pentru răspunsuri
       });
 
       let codeInterpreterInput = "";
