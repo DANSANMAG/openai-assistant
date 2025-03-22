@@ -1,6 +1,64 @@
+import { AssistantResponse } from "ai";
+import OpenAI from "openai";
+import { getWeather } from "@/lib/utils";
+
+const openai = new OpenAI();
+
+export async function POST(req: Request) {
+  const input: {
+    threadId: string;
+    message: string;
+  } = await req.json();
+
+  const threadId = input.threadId ?? (await openai.beta.threads.create({})).id;
+  const createdMessage = await openai.beta.threads.messages.create(threadId, {
+    role: "user",
+    content: input.message,
+  });
+
+  return AssistantResponse(
+    { threadId, messageId: createdMessage.id },
+    async ({ forwardStream, sendDataMessage, sendMessage }) => {
+      const runStream = openai.beta.threads.runs.stream(threadId, {
+        assistant_id:
+          process.env.OPENAI_ASSISTANT_ID ??
+          (() => {
+            throw new Error("OPENAI_ASSISTANT_ID variable is not set");
+          })(),
+      });
+
+             let codeInterpreterInput = "";
+      let codeInterpreterId = "";
+      let codeInterpreterInvoked = false;
+
+      runStream
+        .on("toolCallDelta", async delta => {
+          if (delta.type !== "code_interpreter") return;
+
+          if (delta.code_interpreter?.input) {
+            for await (let textDelta of delta.code_interpreter.input) {
+              codeInterpreterInput += textDelta;
+            }
+            codeInterpreterId = delta.id || "";
+          }
+
+          if (delta.code_interpreter?.outputs) {
+            sendDataMessage({
+              role: "data",
+              data: {
+                // @ts-ignore
+                temperature: delta.code_interpreter.outputs[0].logs,
+                unit: "F",
+              },
+            });
+          }
+
+          codeInterpreterInvoked = true;
+        })
+        .on("messageCreated", () => {
           if (!codeInterpreterInvoked) return;
 
-          sendMessage({
+             sendMessage({
             id: codeInterpreterId,
             role: "assistant",
             content: [{ type: "text", text: { value: codeInterpreterInput } }],
@@ -33,7 +91,7 @@
                     output: JSON.stringify(data),
                   };
 
-                default:
+                      default:
                   throw new Error(
                     `Unknown tool call function: ${toolCall.function.name}`
                   );
@@ -48,3 +106,7 @@
             { tool_outputs }
           )
         );
+      }
+    }
+  );
+}
