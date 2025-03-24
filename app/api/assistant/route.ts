@@ -93,7 +93,7 @@ export async function POST(req: Request) {
 
                 default:
                   throw new Error(
-                    Unknown tool call function: ${toolCall.function.name}
+                    `Unknown tool call function: ${toolCall.function.name}`
                   );
               }
             }
