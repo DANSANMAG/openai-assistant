@@ -70,7 +70,25 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    margin: 0; /* Elimină marginea implicită */
+    padding: 0; /* Elimină umplutura implicită */
+  }
+
+  /* Reducerea distanței între linii */
+  .chat-message {
+    line-height: 1.2; /* Ajustează distanța dintre rânduri */
+    margin: 0; /* Elimină marginea dintre mesaje */
+    padding: 0; /* Elimină paddingul */
+  }
+
+  /* Containerul chat-ului */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Reducerea spațiilor între mesaje */
   }
 }
+
