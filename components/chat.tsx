@@ -1,21 +1,3 @@
-Skip to content
-Sanmag's projects
-Sanmag's projects
-
-Hobby
-
-openai-assistant
-
-cn2taeic1
-
-Changelog
-Help
-Docs
-
-Source
-Output
-components/chat.tsx
-
 import { useAssistant, Message } from "ai/react";
 import { useRef, useEffect, useState } from "react";
 import ChatMessage from "./chat-message";
@@ -70,4 +52,3 @@ export default function Chat() {
         ))}
         {loading && (
           <div className="w-full rounded-3xl animate-pulse bg-gray-300 h-10" />
-openai-assistant – Deployment Source – Vercel
