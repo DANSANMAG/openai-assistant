@@ -1,21 +1,3 @@
-Skip to content
-Sanmag's projects
-Sanmag's projects
-
-Hobby
-
-openai-assistant
-
-cn2taeic1
-
-Changelog
-Help
-Docs
-
-Source
-Output
-components/chat-message.tsx
-
 import Markdown from "react-markdown";
 import { Message } from "ai/react";
 
@@ -65,6 +47,6 @@ export default function ChatMessage({ role, content }: Partial<Message>) {
       return null;
   }
 }
-openai-assistant – Deployment Source – Vercel
+
 
 
