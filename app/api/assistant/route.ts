@@ -6,33 +6,38 @@ const openai = new OpenAI();
 
 export async function POST(req: Request) {
   const input: {
-    threadId: string;
+    threadId?: string;
     message: string;
   } = await req.json();
 
   const threadId = input.threadId ?? (await openai.beta.threads.create({})).id;
+
   const createdMessage = await openai.beta.threads.messages.create(threadId, {
     role: "user",
     content: input.message,
   });
 
+  // ✅ Creăm un run cu assistant ID + max_tokens
+  const run = await openai.beta.threads.runs.create(threadId, {
+    assistant_id:
+      process.env.OPENAI_ASSISTANT_ID ??
+      (() => {
+        throw new Error("OPENAI_ASSISTANT_ID variable is not set");
+      })(),
+    max_tokens: 3000, // ✅ max tokens adăugat
+  });
+
+  const runStream = openai.beta.threads.runs.stream(threadId, run.id);
+
+  let codeInterpreterInput = "";
+  let codeInterpreterId = "";
+  let codeInterpreterInvoked = false;
+
   return AssistantResponse(
     { threadId, messageId: createdMessage.id },
     async ({ forwardStream, sendDataMessage, sendMessage }) => {
-      const runStream = openai.beta.threads.runs.stream(threadId, {
-        assistant_id:
-          process.env.OPENAI_ASSISTANT_ID ??
-          (() => {
-            throw new Error("OPENAI_ASSISTANT_ID variable is not set");
-          })(),
-      });
-
-      let codeInterpreterInput = "";
-      let codeInterpreterId = "";
-      let codeInterpreterInvoked = false;
-
       runStream
-        .on("toolCallDelta", async delta => {
+        .on("toolCallDelta", async (delta) => {
           if (delta.type !== "code_interpreter") return;
 
           if (delta.code_interpreter?.input) {
@@ -93,8 +98,8 @@ export async function POST(req: Request) {
 
                 default:
                   throw new Error(
-                   `Unknown tool call function: ${toolCall.function.name}`
-                );
+                    `Unknown tool call function: ${toolCall.function.name}`
+                  );
               }
             }
           );
@@ -110,4 +115,3 @@ export async function POST(req: Request) {
     }
   );
 }
-
